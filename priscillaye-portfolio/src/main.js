@@ -10,6 +10,19 @@ const sizes = {
     height: window.innerHeight
 };
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+const raycasterObjects = [];
+let currentIntersects = [];
+let currentHoveredObject = [];
+
+const socialLinks = {
+    github: 'https://github.com/ScriptKitKat',
+    linkedin: 'https://www.linkedin.com/in/priscillaye/',
+    youtube: 'https://www.youtube.com/@itsprye',
+};
+
 // Loaders
 const textureLoader = new THREE.TextureLoader();
 
@@ -57,6 +70,27 @@ videoElement.play();
 const videoTexture = new THREE.VideoTexture(videoElement);
 videoTexture.colorSpace = THREE.SRGBColorSpace;
 videoTexture.flipY = false;
+
+window.addEventListener('mousemove', (event) => {
+    mouse.x = (event.clientX / sizes.width) * 2 - 1;
+    mouse.y = -(event.clientY / sizes.height) * 2 + 1;
+});
+
+window.addEventListener('click', (event) => {
+    if (currentIntersects.length > 0) {
+        const object = currentIntersects[0].object;
+
+        Object.entries(socialLinks).forEach(([key, url]) => {
+            if (object.name.includes(key)) {
+                const newWindow = window.open();
+                newWindow.opener = null; // Prevents the new window from being able to access the opener
+                newWindow.location = url; // Opens the link in a new window
+                newWindow.target = "_blank"; // Ensures the link opens in a new tab
+                newWindow.rel = "noopener noreferrer"; // Security measure to prevent the new window from accessing the original window
+            }
+        });
+    }
+});
 
 gltfLoader.load('/models/Priscilla_Portfolio.glb', (glb) => {
     glb.scene.traverse((child) => {
@@ -123,6 +157,10 @@ gltfLoader.load('/models/Priscilla_Portfolio.glb', (glb) => {
                     }
                 });
             }
+
+            if (child.name.includes("target")) {
+                raycasterObjects.push(child);
+            }
         }
     });
     scene.add(glb.scene);
@@ -182,7 +220,30 @@ window.addEventListener('resize', () => {
 const render = () => {
     controls.update();
 
-    console.log(controls.getDistance());
+
+    raycaster.setFromCamera(mouse, camera);
+    currentIntersects = raycaster.intersectObjects(raycasterObjects);
+
+    for (let i = 0; i < currentIntersects.length; i++) {
+    }
+
+    if (currentIntersects.length > 0) {
+        const currentIntersectObject = currentIntersects[0].object;
+
+        if (currentIntersectObject.name.includes("target") &&
+        !currentIntersectObject.name.includes("button")) {
+
+        }
+
+        if (currentIntersectObject.name.includes("button")) {
+            document.body.style.cursor = 'pointer'; // Change cursor to pointer when hovering over an object
+        } else {
+            document.body.style.cursor = 'default'; // Reset cursor when not hovering over an object
+        }
+    } else {
+        document.body.style.cursor = 'default'; // Reset cursor when not hovering over an object
+    }
+
     renderer.render( scene, camera );
     window.requestAnimationFrame(render);
 }
