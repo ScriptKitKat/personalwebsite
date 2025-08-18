@@ -1,4 +1,6 @@
 import './style.scss';
+
+import gsap from "gsap";
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -10,12 +12,100 @@ const sizes = {
     height: window.innerHeight
 };
 
+const modals = {
+    mywork: document.querySelector('.work.modal'),
+    about: document.querySelector('.about.modal'),
+    contact: document.querySelector('.contact.modal'),
+}
+
+document.querySelectorAll(".modal-exit-button").forEach(button => {
+    function handleModalExit(event) {
+        event.preventDefault();
+        const modal = button.closest('.modal');
+        hideModal(modal);
+        gsap.to(button, {
+            scale: 5,
+            duration: 0.5,
+            ease: "back.out(2)",
+            onStart: () => {
+                gsap.to(button, {
+                scale: 1,
+                duration: 0.5,
+                ease: "back.out(2)",
+                onComplete: () => {
+                    gsap.set(button, {
+                    clearProps: "all",
+                    });
+                },
+                });
+            },
+        });
+
+        hideModal(modal);
+    }
+
+    button.addEventListener('click', handleModalExit);
+});
+
+let isModalOpen = false;
+
+const showModal = (modal) => {
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+
+    isModalOpen = true;
+    controls.enabled = false; // Disable controls when modal is open
+
+    if (currentHoveredObject) {
+        playHoverAnimation(currentHoveredObject, false); // Reset hover animation when modal is open
+        currentHoveredObject = null; // Reset hovered object
+    }
+
+    document.body.style.cursor = 'default'; // Reset cursor when modal is open
+    currentIntersects = []; // Clear current intersects to prevent hover effects
+
+    gsap.set(modal, {
+        opacity: 0,
+        scale: 0,
+    });
+    gsap.set(overlay, {
+        opacity: 0,
+    });
+
+    gsap.to(overlay, {
+        opacity: 1,
+        duration: 0.5,
+    });
+
+    gsap.to(modal, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(2)",
+    });
+};
+
+const hideModal = (modal) => {
+    isModalOpen = false;
+    controls.enabled = true; // Re-enable controls when modal is closed
+    
+    gsap.to(modal, {
+    opacity: 0,
+    scale: 0,
+    duration: 0.5,
+    ease: "back.in(2)",
+    onComplete: () => {
+        modal.style.display = 'none';
+    }
+  });
+};
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 const raycasterObjects = [];
 let currentIntersects = [];
-let currentHoveredObject = [];
+let currentHoveredObject = null;
 
 const socialLinks = {
     github: 'https://github.com/ScriptKitKat',
@@ -89,12 +179,32 @@ window.addEventListener('click', (event) => {
                 newWindow.rel = "noopener noreferrer"; // Security measure to prevent the new window from accessing the original window
             }
         });
+
+        if (object.name.includes("mywork")) {
+            showModal(modals.mywork);
+        } else if (object.name.includes("about")) {
+            showModal(modals.about);
+        } else if (object.name.includes("contact")) {
+            showModal(modals.contact);
+        }
+
+        if (isModalOpen) {
+            // Close the modal if it's already open
+            hideModal(modals.mywork);
+            hideModal(modals.about);
+            hideModal(modals.contact);
+        }
     }
 });
 
 gltfLoader.load('/models/Priscilla_Portfolio.glb', (glb) => {
     glb.scene.traverse((child) => {
         if (child.isMesh) {
+            if (child.name.includes("target")) {
+                child.userData.initialScale = new THREE.Vector3().copy(child.scale);
+                child.userData.initialPosition = new THREE.Vector3().copy(child.position);
+                child.userData.initialRotation = new THREE.Euler().copy(child.rotation);
+            }
             if (child.name.includes("glass")) {
                 child.material = new THREE.MeshPhysicalMaterial({
                     transmission: 0.95,
@@ -217,6 +327,92 @@ window.addEventListener('resize', () => {
     renderer.render(scene, camera);
 });
 
+function playHoverAnimation(object, isHovered) {
+    if (!object.userData.initialScale || !object.userData.initialRotation) {
+        // Prevent errors if initial values are not set
+        return;
+    }
+    let scale = 1.4;  
+    gsap.killTweensOf(object.scale);
+    gsap.killTweensOf(object.rotation);
+    gsap.killTweensOf(object.position);
+
+    if(isHovered) {
+        if (object.name.includes("bible")) {
+            scale = 1;
+        }
+
+        if (object.name.includes("snake_plant") || 
+            object.name.includes("mailbox")){
+            scale = 1.1;
+        }
+
+        gsap.to(object.scale,
+            { x: object.userData.initialScale.x * scale,
+              y: object.userData.initialScale.y * scale,
+              z: object.userData.initialScale.z * scale,
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+
+        if (object.name.includes("about")) {
+            gsap.to(object.rotation,
+            { x: object.userData.initialRotation.x - Math.PI/ 8,
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+        } else if (
+        object.name.includes("contact") ||
+        object.name.includes("mywork") ||
+        object.name.includes("github") ||
+        object.name.includes("youtube") ||
+        object.name.includes("linkedin")
+        ) {
+        gsap.to(object.rotation,
+            { x: object.userData.initialRotation.x + Math.PI/ 8,
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+        } else if (object.name.includes("bible")) {
+            gsap.to(object.rotation,
+            { y: object.userData.initialRotation.y - Math.PI / 6, // Rotate around Y axis instead of X
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+        }
+    } else {
+        gsap.to(object.scale,
+            { x: object.userData.initialScale.x,
+              y: object.userData.initialScale.y,
+              z: object.userData.initialScale.z,
+              duration: 0.3,
+              ease: 'back.out(2)',
+            });
+        if (
+        object.name.includes("about") ||
+        object.name.includes("contact") ||
+        object.name.includes("mywork") ||
+        object.name.includes("github") ||
+        object.name.includes("youtube") ||
+        object.name.includes("linkedin")
+        ) {
+        gsap.to(object.rotation,
+            { x: object.userData.initialRotation.x,
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+        }
+
+        if (object.name.includes("bible")) {
+            gsap.to(object.rotation,
+            { y: object.userData.initialRotation.y,
+              duration: 0.5,
+              ease: 'back.out(2)',
+            });
+        }
+    }
+}
+
 const render = () => {
     controls.update();
 
@@ -224,15 +420,19 @@ const render = () => {
     raycaster.setFromCamera(mouse, camera);
     currentIntersects = raycaster.intersectObjects(raycasterObjects);
 
-    for (let i = 0; i < currentIntersects.length; i++) {
-    }
-
     if (currentIntersects.length > 0) {
         const currentIntersectObject = currentIntersects[0].object;
 
-        if (currentIntersectObject.name.includes("target") &&
-        !currentIntersectObject.name.includes("button")) {
+        if (currentIntersectObject.name.includes("target")) {
+            if (currentHoveredObject !== currentIntersectObject) {
 
+                if (currentHoveredObject) {
+                    playHoverAnimation(currentHoveredObject, false);
+                }
+
+                currentHoveredObject = currentIntersectObject;
+                playHoverAnimation(currentIntersectObject, true);
+            }
         }
 
         if (currentIntersectObject.name.includes("button")) {
@@ -241,6 +441,10 @@ const render = () => {
             document.body.style.cursor = 'default'; // Reset cursor when not hovering over an object
         }
     } else {
+        if (currentHoveredObject) {
+            playHoverAnimation(currentHoveredObject, false);
+            currentHoveredObject = null; // Reset hovered object
+        }
         document.body.style.cursor = 'default'; // Reset cursor when not hovering over an object
     }
 
