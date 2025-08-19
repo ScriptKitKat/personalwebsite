@@ -1,12 +1,12 @@
 import React from "react";
 import Page from "../Page";
 
-const AboutPage = () => {
+const WorkPage = () => {
   return (
     <>
-      <Page name={"About"}/>
+      <Page name={"Work"}/>
     </>
   );
 };
 
-export default AboutPage;
+export default WorkPage;

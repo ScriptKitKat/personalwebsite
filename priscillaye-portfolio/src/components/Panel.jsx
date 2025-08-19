@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Page.scss";
+import "./Panel.scss";
 import { useNavigate } from "react-router";
 import gsap from "gsap";
 
