@@ -1,10 +1,10 @@
 import React from "react";
-import Page from "../Page";
+import SidePanel from "../Page";
 
 const AboutPage = () => {
   return (
     <>
-      <Page name={"About"}/>
+      <SidePanel name={"About"}/>
     </>
   );
 };

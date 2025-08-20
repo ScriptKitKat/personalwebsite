@@ -1,0 +1,104 @@
+@font-face {
+  font-family: 'Halimun';
+  src: url('/fonts/HalimunRegular.woff2') format('woff2'),
+       url('/fonts/HalimunRegular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-Regular.woff2') format('woff2'),
+       url('/fonts/Teachers-Regular.woff') format('woff');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap');
+
+
+.projects-section {
+  background: linear-gradient(135deg, #0f111a, #1a1d2b); /* dark gradient */
+  color: #fff;
+  padding: 3rem 2rem;
+  min-height: 100vh;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  line-height: 1.6;
+}
+
+.projects-header {
+  font-size: 2rem;
+  font-family: "Halimun", serif;
+  font-style: italic;
+  color: #B9E6FF;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.projects-header::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: #B9E6FF;
+  margin: 0.5rem auto 0;
+  opacity: 0.7;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.project-card {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(185, 230, 255, 0.25);
+}
+
+.project-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  background: #11141d;
+  padding: 0.5rem;
+}
+
+.project-info h3 {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+}
+
+.project-info p {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.project-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-link {
+  font-size: 0.9rem;
+  color: #B9E6FF;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.project-link:hover {
+  color: #7cc9ff;
+  border-bottom: 1px solid #7cc9ff;
+}

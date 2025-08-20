@@ -1,0 +1,118 @@
+@font-face {
+  font-family: 'Halimun';
+  src: url('/fonts/HalimunRegular.woff2') format('woff2'),
+       url('/fonts/HalimunRegular.woff') format('woff');
+}
+
+.contact-section {
+  background: linear-gradient(135deg, #0f111a, #1a1d2b); // subtle gradient
+  color: #fff;
+  padding: 2.5rem 2rem;
+  min-height: 100vh;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  line-height: 1.6;
+}
+
+.contact-header {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 1.1rem;
+  font-family: "Halimun", serif;
+  font-style: italic;
+  color: #B9E6FF;
+  letter-spacing: 0.5px;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 70px;
+    height: 1px;
+    background: #B9E6FF;
+    margin-left: 0.6rem;
+    vertical-align: middle;
+    opacity: 0.7;
+  }
+}
+.contact-content {
+  margin: auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.contact-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.contact-content p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contact-content a {
+  color: #B9E6FF;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-content a:hover {
+  color: #7cc9ff;
+}
+
+/* Links row */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.contact-links a {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: lowercase;
+  color: #B9E6FF;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Subtle glow */
+.contact-links a::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  border-radius: 8px;
+  background: radial-gradient(circle at center, rgba(185,230,255,0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.contact-links a:hover::before {
+  opacity: 1;
+}
+
+.contact-links a:hover {
+  color: #7cc9ff;
+  text-shadow: 0 0 8px rgba(185,230,255,0.7);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-header {
+    position: static;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .contact-header::after {
+    display: none;
+  }
+}

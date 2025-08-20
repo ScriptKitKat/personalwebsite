@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 import gsap from "gsap";
 import "./Page.scss";
 import About from "../components/information/AboutInfo";
+import Contact from "../components/information/ContactInfo";
+import MyWork from "../components/information/WorkInfo"; // Assuming you have a WorkInfo component
 
-const SidePanel = () => {
+const SidePanel = ({ name }) => {
   const navigate = useNavigate();
 
   const panelRef = useRef(null);
@@ -149,6 +151,8 @@ const SidePanel = () => {
     );
   };
 
+  console.log(name);
+
   return (
     <>
       <div ref={overlayRef} className="overlay" onClick={handleClose} />
@@ -160,7 +164,10 @@ const SidePanel = () => {
           </svg>
         </button>
         <div className="side-panel-wrapper" ref={innerWrapperRef}>
-          <About />
+          {
+            name === "About" ? <About /> :
+            name === "Contact" ? <Contact /> : <MyWork /> // Assuming you have a WorkInfo component
+          }
         </div>
       </aside>
     </>
