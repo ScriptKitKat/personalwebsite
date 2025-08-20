@@ -4,7 +4,7 @@ import Experience from "./Experience/Experience";
 import LoadingPage from "./pages/LoadingPage/LoadingPage";
 import Router from "./routes/Router";
 import { useResponsiveStore } from "./stores/useResponsiveStore";
-import Overlay from "./components/Overlay";
+import MusicButton from './components/MusicButton';
 
 function App() {
 
@@ -20,9 +20,9 @@ function App() {
     return (
         <>
             <LoadingPage />
-            <Overlay />
             <Router />
             <Experience />
+            <MusicButton />
         </>
     );
 }

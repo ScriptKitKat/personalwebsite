@@ -1,0 +1,34 @@
+.music-button {
+  position: fixed;
+  top: 20px;
+  left: 40px;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #247BA0;
+  border-radius: 50%; // Circular button
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 24px;
+  transition: all 0.3s;
+  border:none;
+
+  &:hover {
+    background-color: #247BA0;
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(22, 25, 37, 0.25);
+    border: 2px solid #247BA0;
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px #247BA0
+  }
+
+  svg {
+    margin: 0;
+  }
+}
