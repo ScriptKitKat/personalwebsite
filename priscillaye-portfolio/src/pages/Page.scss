@@ -1,0 +1,81 @@
+.side-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 796px;
+  height: 100vh;
+  background-color: #161925;
+  z-index: 100;
+  color: white;
+
+@media (max-width: 768px) {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+
+}
+
+.side-panel-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+
+.side-panel-close-button {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  height: 72px;
+  width: 72px;
+  color: #161925;
+  border: none;
+  outline: none;
+  padding: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  transition: all 0.4s;
+  border: 2px solid white;
+  border-radius: 25%; // Makes the button box rounded
+
+  @media (max-width: 768px) {
+    top: auto;
+    left: auto;
+    right: -4px;
+    bottom: -4px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #080808;
+  }
+
+  &.light {
+    background-color: #060606;
+    color: white;
+    border: 2px solid #060606;
+    border-radius: 50%;
+
+    &:hover {
+      color: #080808;
+      background-color: white;
+    }
+  }
+}
+
+.side-panel-wrapper {
+  height: 100%;
+  overflow: hidden; // required for smooth scroll (no native scrollbars)
+  position: relative;
+}
