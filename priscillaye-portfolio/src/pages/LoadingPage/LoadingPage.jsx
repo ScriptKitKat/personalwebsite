@@ -1,108 +1,62 @@
-import React from "react";
-import gsap from "gsap";
-// import "./LoadingPage.scss";
+import React, { useEffect, useState } from "react";
+import "./LoadingPage.scss";
+import { useProgress } from "@react-three/drei";
+import { useExperienceStore } from "../../stores/experienceStore";
 
-const LoadingScreen = () => {
-//   const { progress } = useProgress();
-//   const topHalfRef = useRef(null);
-//   const bottomHalfRef = useRef(null);
-//   const progressText = useRef(null);
-//   const progressBar = useRef(null);
-//   const loadingScreenRef = useRef(null);
-//   const messageRef = useRef(null);
-//   const { setIsExperienceReady } = useExperienceStore();
-//   const [onlyOnce, setOnlyOnce] = useState(false);
-//   const [isVisible, setIsVisible] = useState(true);
+export default function LoadingScreen({ onFinish }) {
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(true);
+  const [onlyOnce, setOnlyOnce] = useState(false);
 
-//   useEffect(() => {
-//     if (progress === 100 && !onlyOnce) {
-//       setOnlyOnce(true);
-//       setIsExperienceReady(true);
+  const { progress } = useProgress();
+  const { setIsExperienceReady } = useExperienceStore();
 
-//       const tl = gsap.timeline();
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
-//       tl.to(
-//         progressText.current,
-//         {
-//           opacity: 0,
-//           duration: 1.5,
-//           delay: 0.7,
-//           ease: "power2.out",
-//         },
-//         "fadeOut"
-//       )
-//         .to(
-//           progressBar.current,
-//           {
-//             opacity: 0,
-//             duration: 1.5,
-//             delay: 0.7,
-//             ease: "power2.out",
-//           },
-//           "fadeOut"
-//         )
-//         .to(messageRef.current, {
-//           opacity: 1,
-//           duration: 0.7,
-//           y: "-100%",
-//           ease: "power2.out",
-//         })
-//         .to(messageRef.current, {
-//           opacity: 0,
-//           duration: 1.5,
-//           delay: 1,
-//           y: "-200%",
-//           ease: "power2.out",
-//         })
-//         .to(
-//           topHalfRef.current,
-//           {
-//             y: "-100%",
-//             duration: 1.25,
-//             ease: "power2.out",
-//           },
-//           "-=0.75"
-//         )
-//         .to(
-//           bottomHalfRef.current,
-//           {
-//             y: "100%",
-//             duration: 1.25,
-//             ease: "power2.out",
-//             onComplete: () => {
-//               setIsVisible(false);
-//             },
-//           },
-//           "<"
-//         );
-//     }
-//   }, [progress]);
+    if (progress === 100 && !onlyOnce) {
+      setOnlyOnce(true);
+      setShowWelcome(true);
+      setIsExperienceReady();
 
-//   if (!isVisible) {
-//     return null;
-//   }
+      setTimeout(() => {
+        setFadeOut(true);
+        setTimeout(() => {
+          setIsVisible(false);
+          if (onFinish) onFinish();
+        }, 500);
+      }, 2000);
+    }
 
-//   return (
-//     <div ref={loadingScreenRef} className="loading-screen">
-//       <div ref={topHalfRef} className="background-top-half"></div>
-//       <div ref={bottomHalfRef} className="background-bottom-half"></div>
-//       <div className="loading-screen-info-container">
-//         <div ref={messageRef} className="intro-message-container">
-//           welcome.
-//         </div>
-//         <div className="loading-bar-container">
-//           <div
-//             ref={progressBar}
-//             className="loading-bar"
-//             style={{ width: `${progress}%` }}
-//           ></div>
-//           <div ref={progressText} className="percentage">
-//             {Math.round(progress)}%
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-};
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [progress, onFinish, setIsExperienceReady, onlyOnce]);
 
-export default LoadingScreen;
+  if (!isVisible) {
+    return null;
+  }
+
+  return (
+    <div className={`loading-screen${fadeOut ? " fade-out" : ""}`}>
+      {!showWelcome ? (
+        <div
+          className="custom-cursor"
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        >
+          Loading
+        </div>
+      ) : (
+        <h1 className={`welcome-text${fadeOut ? " fade-out" : ""}`}>Welcome</h1>
+      )}
+    </div>
+  );
+}

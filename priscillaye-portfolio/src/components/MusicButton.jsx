@@ -7,6 +7,7 @@ import "./MusicButton.scss";
 const sound = new Howl({
   src: ['/music/trustinGod.mp3'], // Place your music file in public and update the path
   volume: 0.5,
+  loop: true, // Loop the music
 });
 
 export default function MusicButton() {

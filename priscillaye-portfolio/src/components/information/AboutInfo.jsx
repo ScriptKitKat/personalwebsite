@@ -54,10 +54,13 @@ const AboutInfo = () => {
         <h1>Portfolio Credits:</h1>
         <ul>
             <li>
-                This portfolio was inspired by Andrew Woan's RoomFolio and @Artbytran_ on Instagram
+                This portfolio was inspired by <a href="https://github.com/andrewwoan">Andrew Woan's</a> RoomFolio and @Artbytran_ on Instagram
             </li>
             <li>
-                Music is called ___ by ___
+                Music is called Firm Foundation (Biblofi) - Instrumental
+            </li>
+            <li>
+                Site logo made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a> is licensed by CC BY 4.0
             </li>
             <li>
                 The dog statues are my pets: Cookie and Ginger.

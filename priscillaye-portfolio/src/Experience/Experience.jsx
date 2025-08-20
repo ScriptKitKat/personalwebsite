@@ -10,12 +10,14 @@ const Experience = () => {
 
     const { isMobile } = useResponsiveStore();
 
+    const {isExperienceReady} = useResponsiveStore();
+
     const zoomLevel = isMobile ? 0.65 : 1.1;
     useEffect(() => {
         if (!cameraRef.current) return;
         cameraRef.current.zoom = isMobile ? 0.5 : 1.1;
         cameraRef.current.updateProjectionMatrix();
-    }, [isMobile]);
+    }, [isMobile, isExperienceReady]);
     
     return (
         <>
