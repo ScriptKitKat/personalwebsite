@@ -16,6 +16,7 @@ const Scene = (camera) => {
         <Suspense>
             <Room />
             <RoomTargets />
+            <RoomSpecial />
         </Suspense>
     </>)
 };
