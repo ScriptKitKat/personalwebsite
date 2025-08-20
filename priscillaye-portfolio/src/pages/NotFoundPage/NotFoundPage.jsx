@@ -1,4 +1,6 @@
 import "./NotFoundPage.scss";
+import { Link } from "react-router";
+
 const NotFound = () => {
     return (
         <div className="not-found-page">

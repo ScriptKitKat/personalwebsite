@@ -5,7 +5,7 @@ import "./Page.scss";
 import About from "../components/information/AboutInfo";
 import Contact from "../components/information/ContactInfo";
 import MyWork from "../components/information/WorkInfo"; // Assuming you have a WorkInfo component
-
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage"; // Assuming you have a NotFoundPage component
 const SidePanel = ({ name }) => {
   const navigate = useNavigate();
 
@@ -166,7 +166,8 @@ const SidePanel = ({ name }) => {
         <div className="side-panel-wrapper" ref={innerWrapperRef}>
           {
             name === "About" ? <About /> :
-            name === "Contact" ? <Contact /> : <MyWork /> // Assuming you have a WorkInfo component
+            name === "Contact" ? <Contact /> : 
+            name === "Work" ? <MyWork /> : <NotFoundPage /> // Assuming you have a WorkInfo component
           }
         </div>
       </aside>
